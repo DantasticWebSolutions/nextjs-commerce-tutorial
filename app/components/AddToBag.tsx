@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useShoppingCart } from "use-shopping-cart";
 import { urlFor } from "../lib/sanity";
@@ -21,23 +22,53 @@ export default function AddToBag({
   price,
   price_id,
 }: ProductCart) {
-  const { addItem, handleCartClick } = useShoppingCart();
+  const { addItem, cartDetails, incrementItem, handleCartClick } =
+    useShoppingCart();
+  const [selectedSize, setSelectedSize] = useState("");
 
-  const product = {
-    name: name,
-    description: description,
-    price: price,
-    currency: currency,
-    image: urlFor(image).url(),
-    price_id: price_id,
+  // Function to handle adding item to cart
+  const handleAddToCart = () => {
+    // Create a unique id for the product with size
+    const productId = `${name}-${selectedSize}`;
+
+    // Check if an item with the same id and size exists in the cart
+    const existingItem = Object.values(cartDetails ?? {}).find(
+      (item) => item.id === productId
+    );
+
+    // If item exists, increase quantity, otherwise add as a new item
+    if (existingItem) {
+      incrementItem(productId);
+    } else {
+      addItem({
+        id: productId, // Unique id for different sizes
+        name: `${name} - ${selectedSize}`, // Append size to name
+        description,
+        price: price, // Convert to cents for Stripe
+        currency,
+        image: urlFor(image).url(),
+        price_id,
+        size: selectedSize, // Add size attribute
+      });
+    }
+    handleCartClick();
   };
+
   return (
-    <Button
-      onClick={() => {
-        addItem(product), handleCartClick();
-      }}
-    >
-      Add To Cart
-    </Button>
+    <>
+      <select
+        onChange={(e) => setSelectedSize(e.target.value)}
+        value={selectedSize}
+      >
+        <option value="">Select Size</option>
+        <option value="S">Small</option>
+        <option value="M">Medium</option>
+        <option value="L">Large</option>
+        <option value="XL">Extra Large</option>
+      </select>
+      <Button onClick={handleAddToCart} disabled={!selectedSize}>
+        Add To Cart
+      </Button>
+    </>
   );
 }

@@ -1,12 +1,12 @@
 "use client";
-import { Button } from "@/components/ui/button";
+
 import {
   Sheet,
   SheetContent,
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-
+import CheckoutButton from "./CheckoutButton";
 import Image from "next/image";
 import { useShoppingCart } from "use-shopping-cart";
 
@@ -21,17 +21,6 @@ export default function ShoppingCartModal() {
     redirectToCheckout,
   } = useShoppingCart();
 
-  async function handleCheckoutClick(event: any) {
-    event.preventDefault();
-    try {
-      const result = await redirectToCheckout();
-      if (result?.error) {
-        console.log("result");
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
   return (
     <Sheet open={shouldDisplayCart} onOpenChange={() => handleCartClick()}>
       <SheetContent className="sm:max-w-lg w-[90vw]">
@@ -99,9 +88,7 @@ export default function ShoppingCartModal() {
             </p>
 
             <div className="mt-6">
-              <Button onClick={handleCheckoutClick} className="w-full">
-                Checkout
-              </Button>
+              <CheckoutButton />
             </div>
 
             <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
