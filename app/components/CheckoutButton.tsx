@@ -61,7 +61,7 @@ export default function CheckoutButton() {
       disabled={loading}
       className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 disabled:opacity-50 w-full"
     >
-      {loading ? "Processing..." : "Checkout"}
+      {loading ? "In attesa..." : "Compra Ora"}
     </button>
   );
 }

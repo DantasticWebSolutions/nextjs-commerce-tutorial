@@ -33,7 +33,7 @@ export async function POST(req: NextRequest) {
         },
       })),
       mode: "payment",
-      success_url: `${req.nextUrl.origin}/stripe/success`,
+      success_url: `${req.nextUrl.origin}/stripe/success?status=success`,
       cancel_url: `${req.nextUrl.origin}/stripe/error`,
       shipping_address_collection: {
         allowed_countries: ["IT"],

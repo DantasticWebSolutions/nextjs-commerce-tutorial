@@ -11,7 +11,6 @@ export interface ProductCart {
   price: number;
   currency: string;
   image: any;
-  price_id: string;
 }
 
 export default function AddToBag({
@@ -20,7 +19,6 @@ export default function AddToBag({
   image,
   name,
   price,
-  price_id,
 }: ProductCart) {
   const { addItem, cartDetails, incrementItem, handleCartClick } =
     useShoppingCart();
@@ -47,7 +45,6 @@ export default function AddToBag({
         price: price, // Convert to cents for Stripe
         currency,
         image: urlFor(image).url(),
-        price_id,
         size: selectedSize, // Add size attribute
       });
     }

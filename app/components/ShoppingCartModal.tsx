@@ -25,14 +25,16 @@ export default function ShoppingCartModal() {
     <Sheet open={shouldDisplayCart} onOpenChange={() => handleCartClick()}>
       <SheetContent className="sm:max-w-lg w-[90vw]">
         <SheetHeader>
-          <SheetTitle>Shopping Cart</SheetTitle>
+          <SheetTitle>Carello</SheetTitle>
         </SheetHeader>
 
         <div className="h-full flex flex-col justify-between">
           <div className="mt-8 flex-1 overflow-y-auto">
             <ul className="-my-6 divide-y divide-gray-200">
               {cartCount === 0 ? (
-                <h1 className="py-6">You dont have any items</h1>
+                <h1 className="py-6">
+                  Non hai ancora aggiunto nessun prodotto al carello
+                </h1>
               ) : (
                 <>
                   {Object.values(cartDetails ?? {}).map((entry) => (
@@ -50,7 +52,7 @@ export default function ShoppingCartModal() {
                         <div>
                           <div className="flex justify-between text-base font-medium text-gray-900">
                             <h3>{entry.name}</h3>
-                            <p className="ml-4">${entry.price}</p>
+                            <p className="ml-4">€{entry.price}</p>
                           </div>
                           <p className="mt-1 text-sm text-gray-500 line-clamp-2">
                             {entry.description}
@@ -66,7 +68,7 @@ export default function ShoppingCartModal() {
                               onClick={() => removeItem(entry.id)}
                               className="font-medium text-primary hover:text-primary/80"
                             >
-                              Remove
+                              Rimuovi
                             </button>
                           </div>
                         </div>
@@ -80,11 +82,11 @@ export default function ShoppingCartModal() {
 
           <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
             <div className="flex justify-between text-base font-medium text-gray-900">
-              <p>Subtotal:</p>
-              <p>${totalPrice}</p>
+              <p>Totale:</p>
+              <p>€{totalPrice}</p>
             </div>
             <p className="mt-0.5 text-sm text-gray-500">
-              Shipping and taxes are calculated at checkout.
+              La spedizione viene calcolata al checkout.
             </p>
 
             <div className="mt-6">
@@ -98,7 +100,7 @@ export default function ShoppingCartModal() {
                   onClick={() => handleCartClick()}
                   className=" font-medium text-primary hover:text-primary/80"
                 >
-                  Continue Shopping
+                  Continua a fare Shopping
                 </button>
               </p>
             </div>

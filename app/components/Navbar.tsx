@@ -17,7 +17,9 @@ const links = [
 
 export default function Navbar() {
   const pathname = usePathname();
-  const { handleCartClick } = useShoppingCart();
+  const { cartCount, handleCartClick } = useShoppingCart();
+  const itemCount = cartCount ?? 0;
+
   return (
     <header className="mb-8 border-b">
       <div className="flex items-center justify-between mx-auto max-w-2xl px-4 sm:px-6 lg:max-w-7xl">
@@ -33,13 +35,18 @@ export default function Navbar() {
           </h1>
         </Link>
 
-        <div className="flex divide-x border-r sm:border-l">
+        <div className="flex divide-x">
           <Button
             variant={"outline"}
             onClick={() => handleCartClick()}
-            className="flex flex-col gap-y-1.5 h-12 w-12 sm:h-20 sm:w-20 md:h-24 md:w-24 rounded-none"
+            className="relative flex flex-col gap-y-1.5 h-12 w-12 sm:h-20 sm:w-20 md:h-24 md:w-24 rounded-none border-0"
           >
             <ShoppingBag />
+            {itemCount > 0 && (
+              <span className="absolute top-1 right-1 sm:top-2 sm:right-4 md:top-4 md:right-6 indicator-item badge badge-sm bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center">
+                {itemCount}
+              </span>
+            )}
             <span className="hidden text-xs font-semibold text-gray-500 sm:block">
               Cart
             </span>
