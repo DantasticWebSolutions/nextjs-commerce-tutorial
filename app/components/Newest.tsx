@@ -35,6 +35,7 @@ export default async function Newest() {
         <div className="mt-6 flex flex-col sm:flex-row flex-wrap gap-x-6 gap-y-10 items-stretch justify-center">
           {data.map((product) => (
             <ProductCard
+              key={product._id}
               id={product._id}
               name={product.name}
               price={product.price}
