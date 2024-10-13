@@ -7,13 +7,8 @@ import { ShoppingBag } from "lucide-react";
 import { useShoppingCart } from "use-shopping-cart";
 import Image from "next/image";
 import logoBianco from "../logo-bianco.png";
-
-const links = [
-  { name: "Home", href: "/" },
-  { name: "Men", href: "/Men" },
-  { name: "Women", href: "/Women" },
-  { name: "Teens", href: "/Teens" },
-];
+import logoNero from "../logo-dark.png";
+import spikeLee from "../spikeLee.jpeg";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -24,15 +19,22 @@ export default function Navbar() {
     <header className="mb-8 border-b">
       <div className="flex items-center justify-between mx-auto max-w-2xl px-4 sm:px-6 lg:max-w-7xl">
         <Link href="/">
-          <h1 className="text-2xl md:text-4xl font-bold">
-            <Image
-              src={logoBianco}
-              alt="Carmine Sembra Brooklyn"
-              width={100}
-              height={100}
-              className="ms-6"
-            />
-          </h1>
+          <Image
+            src={logoBianco}
+            alt="Carmine Sembra Brooklyn"
+            width={100}
+            height={100}
+            className="ms-6 block dark:hidden" // Show in light mode, hide in dark mode
+          />
+
+          {/* Dark Mode Logo */}
+          <Image
+            src={logoNero}
+            alt="Carmine Sembra Brooklyn"
+            width={100}
+            height={100}
+            className="ms-6 hidden dark:block" // Hide in light mode, show in dark mode
+          />
         </Link>
 
         <div className="flex divide-x">

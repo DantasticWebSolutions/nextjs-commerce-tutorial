@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 // Define the interface for the product
 interface ProductCardProps {
@@ -22,10 +23,10 @@ export default function ProductCard({
   slug,
 }: ProductCardProps) {
   return (
-    <div className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+    <div className="w-full max-w-sm border border-border rounded-lg shadow-custom-light dark:shadow-custom-dark">
       <Link href={`/product/${slug}`}>
         <Image
-          className="p-8 rounded-t-lg object-cover"
+          className="pb-8 rounded-t-lg object-cover"
           src={imageUrl}
           alt={`${name} image`}
           height={300}
@@ -34,19 +35,17 @@ export default function ProductCard({
         />
       </Link>
       <div className="px-5 pb-5">
-        <Link href={`/product/${slug}`}>
-          <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
-            {name}
-          </h5>
-        </Link>
         <div className="flex items-center justify-between mt-3">
-          <span className="text-3xl font-bold text-gray-900 dark:text-white">
-            €{price}
-          </span>
           <Link href={`/product/${slug}`}>
-            <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-              Add to cart
-            </button>
+            <h5 className="text-xl font-normal tracking-tight">{name}</h5>
+          </Link>
+          <span className="text-3xl font-bold ps-3">€{price.toFixed(2)}</span>
+        </div>
+        <div className="flex items-center justify-between mt-3 w-full">
+          <Link href={`/product/${slug}`} className="w-full">
+            <Button className="w-full focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+              Compra ora
+            </Button>
           </Link>
         </div>
       </div>

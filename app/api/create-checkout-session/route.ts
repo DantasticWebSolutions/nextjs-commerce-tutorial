@@ -12,28 +12,48 @@ export async function POST(req: NextRequest) {
   try {
     // Parse the incoming request body
     const { items } = await req.json();
+    // Calculate the total price
+    const totalPrice = items.reduce(
+      (acc: number, item: any) => acc + item.price * item.quantity,
+      0
+    );
+
+    // Determine the shipping cost
+    const shippingCost = totalPrice > 90 ? 0 : 5;
+
+    // Prepare line items for Stripe
+    const line_items = items.map((item: any) => ({
+      price_data: {
+        currency: "eur",
+        product_data: {
+          name: item.name,
+          images: item.images ? [item.images] : [],
+        },
+        unit_amount: item.price * 100,
+      },
+      quantity: item.quantity,
+    }));
+
+    // Include shipping cost as a line item if applicable
+    if (shippingCost > 0) {
+      line_items.push({
+        price_data: {
+          currency: "eur",
+          product_data: {
+            name: "Spedizione",
+          },
+          unit_amount: shippingCost * 100,
+        },
+        quantity: 1,
+      });
+    }
 
     // Create the checkout session with Stripe
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
-      line_items: items.map((item: any) => ({
-        price_data: {
-          currency: "eur",
-          product_data: {
-            name: item.name,
-            images: [item.images],
-          },
-          unit_amount: item.price * 100,
-        },
-        quantity: item.quantity,
-        adjustable_quantity: {
-          enabled: true,
-          minimum: 1,
-          maximum: 10,
-        },
-      })),
+      line_items,
       mode: "payment",
-      success_url: `${req.nextUrl.origin}/stripe/success?status=success`,
+      success_url: `${req.nextUrl.origin}/stripe/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${req.nextUrl.origin}/stripe/error`,
       shipping_address_collection: {
         allowed_countries: ["IT"],

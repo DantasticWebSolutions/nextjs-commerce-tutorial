@@ -8,11 +8,11 @@ import ProductCard from "./ProductCard";
 async function getData() {
   const query = `*[_type == "product"][0...4] | order(_createdAt desc) {
         _id,
-          price,
+        price,
         name,
-          "slug": slug.current,
-          "categoryName": category->name,
-          "imageUrl": images[0].asset->url
+        "slug": slug.current,
+        "categoryName": category->name,
+        "imageUrl": images[0].asset->url
       }`;
 
   const data = await client.fetch(query);
@@ -24,11 +24,11 @@ export default async function Newest() {
   const data: simplifiedProduct[] = await getData();
 
   return (
-    <div className="bg-white">
+    <div>
       <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
         <div className="flex justify-center items-center">
-          <h2 className="w-100 text-2xl font-bold tracking-tight text-gray-900">
-            I nostri nuovi prodotti
+          <h2 className="w-100 text-2xl font-semibold tracking-tight">
+            I prodotti firmati Brooklyn
           </h2>
         </div>
 

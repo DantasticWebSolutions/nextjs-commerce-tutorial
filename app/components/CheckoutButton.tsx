@@ -3,13 +3,21 @@
 import { useShoppingCart } from "use-shopping-cart";
 import { loadStripe } from "@stripe/stripe-js";
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
 
 // Initialize Stripe with the public key from the environment variables
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_KEY as string);
 
-export default function CheckoutButton() {
-  const { cartDetails } = useShoppingCart();
+// Define prop types
+interface CheckoutButtonProps {
+  shippingCost: number;
+}
+
+export default function CheckoutButton({ shippingCost }: CheckoutButtonProps) {
+  const { cartDetails, totalPrice } = useShoppingCart();
   const [loading, setLoading] = useState(false);
+
+  const cartTotalPrice = totalPrice ?? 0;
 
   // Handler to initiate the checkout process
   const handleCheckout = async () => {
@@ -29,6 +37,16 @@ export default function CheckoutButton() {
       quantity: entry.quantity,
       size: entry.size,
     }));
+
+    // // Include shipping cost as a line item if applicable
+    // if (shippingCost > 0) {
+    //   lineItems.push({
+    //     name: "Spedizione",
+    //     price: shippingCost,
+    //     quantity: 1,
+    //     size: "not a size",
+    //   });
+    // }
 
     try {
       // Send request to the backend to create a checkout session
@@ -56,12 +74,12 @@ export default function CheckoutButton() {
   };
 
   return (
-    <button
+    <Button
       onClick={handleCheckout}
-      disabled={loading}
-      className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 disabled:opacity-50 w-full"
+      disabled={cartTotalPrice === 0 || loading}
+      className="text-white py-2 px-4 rounded disabled:opacity-50 w-full"
     >
       {loading ? "In attesa..." : "Compra Ora"}
-    </button>
+    </Button>
   );
 }

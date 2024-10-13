@@ -17,13 +17,22 @@ export default function ShoppingCartModal() {
     handleCartClick,
     cartDetails,
     removeItem,
+    incrementItem,
+    decrementItem,
     totalPrice,
     redirectToCheckout,
   } = useShoppingCart();
 
+  // Ensure totalPrice is a number
+  const cartTotalPrice = totalPrice ?? 0;
+
+  // Calculate shipping cost and total with shipping
+  const shippingCost = cartTotalPrice > 90 ? 0 : 5;
+  const totalWithShipping = cartTotalPrice + shippingCost;
+
   return (
     <Sheet open={shouldDisplayCart} onOpenChange={() => handleCartClick()}>
-      <SheetContent className="sm:max-w-lg w-[90vw]">
+      <SheetContent className="bg-background sm:max-w-lg w-[90vw]">
         <SheetHeader>
           <SheetTitle>Carello</SheetTitle>
         </SheetHeader>
@@ -39,7 +48,7 @@ export default function ShoppingCartModal() {
                 <>
                   {Object.values(cartDetails ?? {}).map((entry) => (
                     <li key={entry.id} className="flex py-6">
-                      <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
+                      <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-border">
                         <Image
                           src={entry.image as string}
                           alt="Product image"
@@ -52,21 +61,37 @@ export default function ShoppingCartModal() {
                         <div>
                           <div className="flex justify-between text-base font-medium text-gray-900">
                             <h3>{entry.name}</h3>
-                            <p className="ml-4">€{entry.price}</p>
+                            <p className="ml-4">€{entry.price}.00</p>
                           </div>
-                          <p className="mt-1 text-sm text-gray-500 line-clamp-2">
-                            {entry.description}
-                          </p>
                         </div>
 
-                        <div className="flex flex-1 items-end justify-between text-sm">
-                          <p className="text-gray-500">QTY: {entry.quantity}</p>
+                        <div className="flex flex-1 items-center justify-between text-sm">
+                          <div className="flex items-center space-x-2">
+                            <button
+                              type="button"
+                              onClick={() => decrementItem(entry.id)}
+                              disabled={entry.quantity <= 1}
+                              className="p-1 border border-primary rounded text-primary disabled:opacity-50 w-[40px] h-[40px]"
+                            >
+                              <span>-</span>
+                            </button>
+                            <span className="min-w-[20px] flex flex-column justify-center text-lg">
+                              {entry.quantity}
+                            </span>
+                            <button
+                              type="button"
+                              onClick={() => incrementItem(entry.id)}
+                              className="p-1 border border-primary text-primary rounded w-[40px] h-[40px]"
+                            >
+                              <span>+</span>
+                            </button>
+                          </div>
 
                           <div className="flex">
                             <button
                               type="button"
                               onClick={() => removeItem(entry.id)}
-                              className="font-medium text-primary hover:text-primary/80"
+                              className="font-medium text-primary hover:text-primary/80 rounded p-2 me-1"
                             >
                               Rimuovi
                             </button>
@@ -82,27 +107,32 @@ export default function ShoppingCartModal() {
 
           <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
             <div className="flex justify-between text-base font-medium text-gray-900">
-              <p>Totale:</p>
-              <p>€{totalPrice}</p>
+              <p>Subtotal:</p>
+              <p>€{cartTotalPrice.toFixed(2)}</p>
             </div>
-            <p className="mt-0.5 text-sm text-gray-500">
-              La spedizione viene calcolata al checkout.
-            </p>
+            <div className="flex justify-between text-base font-medium text-gray-900">
+              <div>
+                <p>Spedizione:</p>
+                <p className="text-xs">Gratis per ordini superiori a 90.00€</p>
+              </div>
+              <p>€{shippingCost.toFixed(2)}</p>
+            </div>
+            <div className="flex justify-between text-base font-medium text-gray-900">
+              <p>Totale:</p>
+              <p>€{totalWithShipping.toFixed(2)}</p>
+            </div>
 
             <div className="mt-6">
-              <CheckoutButton />
+              <CheckoutButton shippingCost={shippingCost} />
             </div>
 
-            <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
-              <p>
-                OR{" "}
-                <button
-                  onClick={() => handleCartClick()}
-                  className=" font-medium text-primary hover:text-primary/80"
-                >
-                  Continua a fare Shopping
-                </button>
-              </p>
+            <div className="mt-3 flex justify-center text-center text-sm text-gray-500">
+              <button
+                onClick={() => handleCartClick()}
+                className="border border-primary py-2 px-4 rounded w-full font-medium text-primary hover:text-primary/80"
+              >
+                Continua a fare Shopping
+              </button>
             </div>
           </div>
         </div>

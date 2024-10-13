@@ -52,20 +52,46 @@ export default function AddToBag({
   };
 
   return (
-    <>
-      <select
-        onChange={(e) => setSelectedSize(e.target.value)}
-        value={selectedSize}
+    <div className="flex flex-col">
+      <div className="mb-4">
+        <p>Seleziona la taglia:</p>
+        <div className="mt-3 flex space-x-4">
+          {["XS", "S", "M", "L", "XL"].map((size) => (
+            <label
+              key={size}
+              className={`cursor-pointer text-white px-4 py-2 border rounded-lg transition-colors
+                ${
+                  selectedSize === size
+                    ? "bg-primary border-primary" // Selected: full color
+                    : "bg-transparent border-primary hover:bg-primary hover:text-white" // Not selected: outlined
+                }`}
+            >
+              <input
+                type="radio"
+                name="size"
+                value={size}
+                checked={selectedSize === size}
+                onChange={(e) => setSelectedSize(e.target.value)}
+                className="hidden" // Hide the default radio button
+              />
+              <span
+                className={`${
+                  selectedSize === size ? "text-white" : "text-primar"
+                }`}
+              >
+                {size}
+              </span>
+            </label>
+          ))}
+        </div>
+      </div>
+      <Button
+        className="text-white"
+        onClick={handleAddToCart}
+        disabled={!selectedSize}
       >
-        <option value="">Select Size</option>
-        <option value="S">Small</option>
-        <option value="M">Medium</option>
-        <option value="L">Large</option>
-        <option value="XL">Extra Large</option>
-      </select>
-      <Button onClick={handleAddToCart} disabled={!selectedSize}>
-        Add To Cart
+        Aggiungi al carrello
       </Button>
-    </>
+    </div>
   );
 }
