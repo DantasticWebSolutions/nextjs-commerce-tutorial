@@ -54,7 +54,7 @@ export async function POST(req: NextRequest) {
       line_items,
       mode: "payment",
       success_url: `${req.nextUrl.origin}/stripe/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${req.nextUrl.origin}/stripe/error`,
+      cancel_url: `${req.nextUrl.origin}`,
       shipping_address_collection: {
         allowed_countries: ["IT"],
       },
