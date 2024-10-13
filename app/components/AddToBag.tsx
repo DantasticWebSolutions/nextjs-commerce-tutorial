@@ -52,14 +52,14 @@ export default function AddToBag({
   };
 
   return (
-    <div className="flex flex-col">
+    <div className="w-full md:w-auto flex flex-col">
       <div className="mb-4">
         <p>Seleziona la taglia:</p>
-        <div className="mt-3 flex space-x-4">
+        <div className="mt-3 flex flex-col space-y-4 md:flex-row md:space-y-0 md:space-x-4">
           {["XS", "S", "M", "L", "XL"].map((size) => (
             <label
               key={size}
-              className={`cursor-pointer text-white px-4 py-2 border rounded-lg transition-colors
+              className={`text-center w-full md:w-auto cursor-pointer text-white px-4 py-2 border rounded-lg transition-colors
                 ${
                   selectedSize === size
                     ? "bg-primary border-primary" // Selected: full color
@@ -74,11 +74,7 @@ export default function AddToBag({
                 onChange={(e) => setSelectedSize(e.target.value)}
                 className="hidden" // Hide the default radio button
               />
-              <span
-                className={`${
-                  selectedSize === size ? "text-white" : "text-primar"
-                }`}
-              >
+              <span className={`${selectedSize === size ? "text-white" : ""}`}>
                 {size}
               </span>
             </label>
@@ -86,7 +82,7 @@ export default function AddToBag({
         </div>
       </div>
       <Button
-        className="text-white"
+        className="text-white w-full md:w-auto"
         onClick={handleAddToCart}
         disabled={!selectedSize}
       >

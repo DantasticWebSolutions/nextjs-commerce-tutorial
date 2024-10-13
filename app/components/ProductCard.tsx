@@ -43,7 +43,7 @@ export default function ProductCard({
         </div>
         <div className="flex items-center justify-between mt-3 w-full">
           <Link href={`/product/${slug}`} className="w-full">
-            <Button className="w-full focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+            <Button className="text-white w-full focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center">
               Compra ora
             </Button>
           </Link>

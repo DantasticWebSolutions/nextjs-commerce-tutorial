@@ -61,7 +61,8 @@ body {
 }
 
 @layer base {
-  *:focus {
+  button:focus,
+  input:focus {
     @apply ring-2 ring-primary outline-none; /* Apply global orange outline */
   }
 }

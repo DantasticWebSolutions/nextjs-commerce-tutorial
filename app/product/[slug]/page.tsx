@@ -55,16 +55,21 @@ export default async function ProductPge({
           <ImageGallery images={data.images} />
 
           <div className="md:py-8">
+            <div className="mb-6">
+              <div className="flex items-end gap-2">
+                <h3 className="text-4xl md:text-5xl">
+                  €{data.price.toFixed(2)}
+                </h3>
+              </div>
+            </div>
             <div className="mb-2 md:mb-3">
-              <span className="mb-0.5 inline-block">{data.categoryName}</span>
+              {/* <span className="mb-0.5 inline-block">{data.categoryName}</span> */}
               <h2 className="text-2xl font-bold lg:text-3xl">{data.name}</h2>
             </div>
 
-            <div className="mb-2">
-              <div className="flex items-end gap-2">
-                <h3 className="text-xl font-bold md:text-2xl">€{data.price}</h3>
-              </div>
-            </div>
+            <p className="mb-12 text-sm font-thin tracking-wide">
+              {data.description}
+            </p>
 
             <div className="flex gap-2.5">
               <AddToBag
@@ -82,8 +87,6 @@ export default async function ProductPge({
                 Spedizione in 3-6 Giorni lavorativi
               </span>
             </div>
-
-            <p className="mt-12 text-base tracking-wide">{data.description}</p>
           </div>
         </div>
       </div>
