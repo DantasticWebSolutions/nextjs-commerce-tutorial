@@ -32,7 +32,7 @@ export default async function Newest() {
           </h2>
         </div>
 
-        <div className="mt-6 flex flex-col sm:flex-row flex-wrap gap-x-6 gap-y-10 items-stretch justify-center">
+        <div className="mt-6 flex flex-col sm:flex-row flex-wrap gap-x-6 gap-y-10 items-center justify-center">
           {data.map((product) => (
             <ProductCard
               key={product._id}

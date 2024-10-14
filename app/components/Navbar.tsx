@@ -16,7 +16,7 @@ export default function Navbar() {
   const itemCount = cartCount ?? 0;
 
   return (
-    <header className="mb-8 border-b">
+    <header className="sticky top-0 bg-background mb-8 border-b z-50">
       <div className="flex items-center justify-between mx-auto max-w-2xl px-4 sm:px-6 lg:max-w-7xl">
         <Link href="/">
           <Image
@@ -24,7 +24,7 @@ export default function Navbar() {
             alt="Carmine Sembra Brooklyn"
             width={100}
             height={100}
-            className="ms-6 block dark:hidden" // Show in light mode, hide in dark mode
+            className="ms-2 block dark:hidden py-2" // Show in light mode, hide in dark mode
           />
 
           {/* Dark Mode Logo */}
@@ -33,7 +33,7 @@ export default function Navbar() {
             alt="Carmine Sembra Brooklyn"
             width={100}
             height={100}
-            className="ms-6 hidden dark:block" // Hide in light mode, show in dark mode
+            className="ms-2 hidden dark:block py-2" // Hide in light mode, show in dark mode
           />
         </Link>
 

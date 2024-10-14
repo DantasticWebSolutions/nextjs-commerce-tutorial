@@ -9,6 +9,7 @@ import {
 import CheckoutButton from "./CheckoutButton";
 import Image from "next/image";
 import { useShoppingCart } from "use-shopping-cart";
+import memeJohnTravolta from "../john-travolta-meme.gif";
 
 export default function ShoppingCartModal() {
   const {
@@ -41,9 +42,17 @@ export default function ShoppingCartModal() {
           <div className="mt-8 flex-1 overflow-y-auto">
             <ul className="-my-6 divide-y divide-gray-200">
               {cartCount === 0 ? (
-                <h1 className="py-6">
-                  Non hai ancora aggiunto nessun prodotto al carello
-                </h1>
+                <div className="flex flex-col justify-center items-center min-h-[500px]">
+                  <h1 className="py-6 text-center">
+                    Non hai ancora aggiunto nessun prodotto al carello
+                  </h1>
+                  <Image
+                    src={memeJohnTravolta}
+                    alt="Product image"
+                    width={300}
+                    height={300}
+                  />
+                </div>
               ) : (
                 <>
                   {Object.values(cartDetails ?? {}).map((entry) => (

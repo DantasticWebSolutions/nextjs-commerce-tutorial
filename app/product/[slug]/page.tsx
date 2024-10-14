@@ -5,6 +5,7 @@ import { client } from "@/app/lib/sanity";
 import { Button } from "@/components/ui/button";
 import { Star, Truck } from "lucide-react";
 import ProductCard from "@/app/components/ProductCard";
+import InstagramDm from "@/app/components/InstagramDm";
 
 async function getData(slug: string) {
   const query = `*[_type == "product" && slug.current == "${slug}"][0] {
@@ -111,6 +112,7 @@ export default async function ProductPge({
           ))}
         </div>
       </div>
+      <InstagramDm />
     </div>
   );
 }
