@@ -5,6 +5,7 @@ import CartProvider from "./components/Providers";
 import Navbar from "./components/Navbar";
 import ShoppingCartModal from "./components/ShoppingCartModal";
 import Head from "next/head";
+import Footer from "./components/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -50,6 +51,7 @@ export default function RootLayout({
           <Navbar />
           <ShoppingCartModal />
           {children}
+          <Footer />
         </CartProvider>
       </body>
     </html>

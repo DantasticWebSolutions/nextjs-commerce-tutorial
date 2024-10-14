@@ -23,7 +23,7 @@ export default function ProductCard({
   slug,
 }: ProductCardProps) {
   return (
-    <div className="w-full max-w-sm border border-border rounded-lg shadow-custom-light dark:shadow-custom-dark">
+    <div className="w-full max-w-sm border border-border rounded-lg shadow-custom-light">
       <Link href={`/product/${slug}`}>
         <Image
           className="pb-8 rounded-t-lg object-cover"
