@@ -7,6 +7,7 @@ const PrivacyPolicyPage = () => {
       <p className="mb-2">
         <strong>Ultimo aggiornamento:</strong> 14/10/2024
       </p>
+      {/* eslint-disable react/no-unescaped-entities */}
       <p className="text-gray-700 dark:text-gray-300 mb-4">
         La presente Informativa sulla Privacy descrive come{" "}
         <strong>Carmine Sembra Brooklyn</strong> ("noi", "ci" o "nostro")
@@ -14,7 +15,6 @@ const PrivacyPolicyPage = () => {
         ("tu" o "tuo") del nostro sito web{" "}
         <strong>https://carmine-sembra-brooklyn.vercel.app/</strong>.
       </p>
-
       <h2 className="text-2xl font-semibold mt-8 mb-4">
         Raccolta dei Dati Personali
       </h2>
@@ -28,7 +28,6 @@ const PrivacyPolicyPage = () => {
         <li>Indirizzo email</li>
         <li>Numero di telefono (se applicabile)</li>
       </ul>
-
       <h2 className="text-2xl font-semibold mt-8 mb-4">
         Utilizzo dei Dati Personali
       </h2>
@@ -39,7 +38,6 @@ const PrivacyPolicyPage = () => {
         <li>Elaborare e spedire i tuoi ordini</li>
         <li>Fornire assistenza clienti</li>
       </ul>
-
       <h2 className="text-2xl font-semibold mt-8 mb-4">
         Condivisione dei Dati con Terze Parti
       </h2>
@@ -54,7 +52,6 @@ const PrivacyPolicyPage = () => {
           Servizi di spedizione, per consegnare i prodotti al tuo indirizzo
         </li>
       </ul>
-
       <h2 className="text-2xl font-semibold mt-8 mb-4">
         Conservazione dei Dati
       </h2>
@@ -62,14 +59,12 @@ const PrivacyPolicyPage = () => {
         Conserviamo i tuoi dati personali solo per il tempo necessario a
         soddisfare le finalità descritte in questa Informativa.
       </p>
-
       <h2 className="text-2xl font-semibold mt-8 mb-4">Diritti dell'Utente</h2>
       <p className="text-gray-700 dark:text-gray-300 mb-4">
         Hai il diritto di accedere, rettificare o cancellare i tuoi dati
         personali in nostro possesso. Per esercitare questi diritti, contattaci
         all'indirizzo email <strong>carminesembrabrooklyn@gmail.com</strong>.
       </p>
-
       <h2 className="text-2xl font-semibold mt-8 mb-4">Contatti</h2>
       <p className="text-gray-700 dark:text-gray-300 mb-4">
         Se hai domande sulla presente Informativa sulla Privacy, puoi

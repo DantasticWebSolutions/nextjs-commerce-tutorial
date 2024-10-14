@@ -45,6 +45,7 @@ export default function RootLayout({
         <meta name="msapplication-TileColor" content="#ffffff" />
         <meta name="msapplication-config" content="/browserconfig.xml" />
         <meta name="theme-color" content="#ffffff" />
+        <meta charSet="UTF-8" />
       </Head>
       <body className={inter.className}>
         <CartProvider>

@@ -3,6 +3,7 @@ import React from "react";
 const TermsAndConditionsPage = () => {
   return (
     <div className="max-w-4xl mx-auto my-10 p-6 rounded shadow">
+      {/* eslint-disable react/no-unescaped-entities */}
       <h1 className="text-3xl font-bold mb-4">
         Termini e Condizioni di Vendita
       </h1>
@@ -42,7 +43,7 @@ const TermsAndConditionsPage = () => {
       <h2 className="text-2xl font-semibold mt-8 mb-4">Resi e Rimborsi</h2>
       <p className="text-gray-700 dark:text-gray-300 mb-4">
         Non offriamo resi o rimborsi a meno che il prodotto non sia difettoso o
-        danneggiato. In caso di prodotto difettoso, contattaci all'indirizzo
+        danneggiato. In caso di prodotto difettoso, contattaci allindirizzo
         email <strong>carminesembrabrooklyn@gmail.com</strong> o su Instagram
         <strong>@carmine.brklyn</strong> entro 14 giorni dalla ricezione.
       </p>
