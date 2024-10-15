@@ -16,6 +16,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "form-data": "^4.0.0",
+    "framer-motion": "^11.11.9",
     "lucide-react": "^0.289.0",
     "mailgun.js": "^10.2.3",
     "micro": "^10.0.1",

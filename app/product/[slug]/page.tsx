@@ -65,7 +65,7 @@ export default async function ProductPge({
             </div>
             <div className="mb-2 md:mb-3">
               {/* <span className="mb-0.5 inline-block">{data.categoryName}</span> */}
-              <h2 className="text-2xl font-bold lg:text-3xl">{data.name}</h2>
+              <h1 className="text-2xl font-bold lg:text-3xl">{data.name}</h1>
             </div>
 
             <p className="mb-12 text-sm font-thin tracking-wide">
@@ -98,7 +98,8 @@ export default async function ProductPge({
             Merchandise firmato Brooklyn
           </h2>
         </div>
-        <div className="mt-6 flex flex-col sm:flex-row flex-wrap gap-x-6 gap-y-10 items-stretch justify-center">
+
+        <div className="mt-6 flex flex-col sm:flex-row flex-wrap gap-x-6 gap-y-10 items-center justify-center">
           {recommendedProducts.map((product: any) => (
             <ProductCard
               key={product._id}
@@ -112,6 +113,26 @@ export default async function ProductPge({
           ))}
         </div>
       </div>
+      {/* <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
+        <div className="flex justify-center items-center">
+          <h2 className="w-100 text-2xl font-semibold tracking-tight">
+            Merchandise firmato Brooklyn
+          </h2>
+        </div>
+        <div className="mt-6 flex flex-col sm:flex-row flex-wrap gap-x-6 gap-y-10 items-center justify-center">
+          {recommendedProducts.map((product: any) => (
+            <ProductCard
+              key={product._id}
+              id={product._id}
+              name={product.name}
+              price={product.price}
+              categoryName={product.categoryName}
+              imageUrl={product.imageUrl}
+              slug={product.slug}
+            />
+          ))}
+        </div>
+      </div> */}
       <InstagramDm />
     </div>
   );

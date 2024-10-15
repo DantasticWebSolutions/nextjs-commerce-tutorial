@@ -48,7 +48,8 @@ export default function ShoppingCartModal() {
                   </h1>
                   <Image
                     src={memeJohnTravolta}
-                    alt="Product image"
+                    alt="Non ci sono prodotti"
+                    priority={true}
                     width={300}
                     height={300}
                   />

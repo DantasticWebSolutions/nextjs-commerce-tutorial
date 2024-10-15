@@ -39,7 +39,7 @@ export default function StripeSuccess() {
   // Handle the loading state
   if (isPaymentSuccessful === null) {
     return (
-      <div className="h-screen flex items-center justify-center">
+      <div className="h-[70vh] flex items-center justify-center">
         <p>Verifying payment...</p>
       </div>
     );
@@ -48,7 +48,7 @@ export default function StripeSuccess() {
   // Handle the case where session_id is missing or payment verification failed
   if (!isPaymentSuccessful) {
     return (
-      <div className="h-screen flex items-center justify-center">
+      <div className="h-[70vh] flex items-center justify-center">
         <p className="text-center">
           Payment verification failed: {errorMessage}. Please contact support.
         </p>
@@ -58,11 +58,11 @@ export default function StripeSuccess() {
 
   // Payment was successful
   return (
-    <div className="h-screen">
-      <div className="mt-32 md:max-w-[50vw] mx-auto">
+    <div className="h-[70vh] flex flex-col justify-center items-center">
+      <div className="mt-6 md:max-w-[50vw] mx-auto">
         <CheckCheck className="text-green-600 w-16 h-16 mx-auto my-6" />
         <div className="text-center">
-          <h3 className="md:text-2xl text-base text-gray-900 font-semibold text-center">
+          <h3 className="md:text-2xl text-base font-semibold text-center">
             Payment Done!
           </h3>
           <p className="text-gray-600 my-2">

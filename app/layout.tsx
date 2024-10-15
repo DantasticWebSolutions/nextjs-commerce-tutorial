@@ -5,7 +5,6 @@ import CartProvider from "./components/Providers";
 import Navbar from "./components/Navbar";
 import ShoppingCartModal from "./components/ShoppingCartModal";
 import Head from "next/head";
-import Footer from "./components/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -45,14 +44,12 @@ export default function RootLayout({
         <meta name="msapplication-TileColor" content="#ffffff" />
         <meta name="msapplication-config" content="/browserconfig.xml" />
         <meta name="theme-color" content="#ffffff" />
-        <meta charSet="UTF-8" />
       </Head>
       <body className={inter.className}>
         <CartProvider>
           <Navbar />
           <ShoppingCartModal />
           {children}
-          <Footer />
         </CartProvider>
       </body>
     </html>
