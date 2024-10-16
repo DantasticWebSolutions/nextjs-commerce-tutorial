@@ -9,7 +9,7 @@ import {
 import CheckoutButton from "./CheckoutButton";
 import Image from "next/image";
 import { useShoppingCart } from "use-shopping-cart";
-import memeJohnTravolta from "../john-travolta-meme.gif";
+import memeJohnTravolta from "../../john-travolta-meme.gif";
 
 export default function ShoppingCartModal() {
   const {

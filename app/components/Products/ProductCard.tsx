@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import SkeletonImage from "./SkeletonsImage";
+import SkeletonImage from "../Skeletons/SkeletonsImage";
 import { lazy } from "react";
 
 // Define the interface for the product

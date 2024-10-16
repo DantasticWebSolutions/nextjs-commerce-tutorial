@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Image, { ImageProps } from "next/image";
-import Skeleton from "./Skeleton"; // Assuming you have a Skeleton component
+import Skeleton from "./SkeletonGlobal"; // Assuming you have a Skeleton component
 
 interface SkeletonImageProps extends ImageProps {
   src: string;
@@ -27,13 +27,11 @@ const SkeletonImage: React.FC<SkeletonImageProps> = ({
   return (
     <div className={`relative ${className}`}>
       {/* <Skeleton className={`${skeletonClassName}`} /> */}
-      {isLoading && <Skeleton className={`${skeletonClassName}`} />}
+      {/* {isLoading && <Skeleton className={`${skeletonClassName}`} />} */}
       <Image
         src={src}
         alt={alt}
-        className={`${
-          isLoading ? "hidden" : "block"
-        } ${imageClassName} h-full w-full object-cover object-center`}
+        className={`${imageClassName} h-full w-full object-cover object-center`}
         priority={priority}
         onLoad={() => setIsLoading(false)}
         {...rest}

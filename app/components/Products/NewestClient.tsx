@@ -1,27 +1,21 @@
-import { simplifiedProduct } from "../interface";
-import { client } from "../lib/sanity";
+"use client";
+
+import { motion } from "framer-motion";
 import ProductCard from "./ProductCard";
+import { simplifiedProduct } from "../../interface";
 
-async function getData() {
-  const query = `*[_type == "product"][0...4] | order(_createdAt desc) {
-        _id,
-        price,
-        name,
-        "slug": slug.current,
-        "categoryName": category->name,
-        "imageUrl": images[0].asset->url
-      }`;
-
-  const data = await client.fetch(query);
-
-  return data;
+interface NewestClientProps {
+  data: simplifiedProduct[];
 }
 
-export default async function Newest() {
-  const data: simplifiedProduct[] = await getData();
-
+export default function NewestClient({ data }: NewestClientProps) {
   return (
-    <div>
+    <motion.div
+      className="newest-container"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+    >
       <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
         <div className="flex justify-center items-center">
           <h2 className="w-100 text-2xl font-semibold tracking-tight">
@@ -43,6 +37,6 @@ export default async function Newest() {
           ))}
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }

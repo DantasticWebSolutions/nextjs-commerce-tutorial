@@ -38,16 +38,6 @@ export default function CheckoutButton({ shippingCost }: CheckoutButtonProps) {
       size: entry.size,
     }));
 
-    // // Include shipping cost as a line item if applicable
-    // if (shippingCost > 0) {
-    //   lineItems.push({
-    //     name: "Spedizione",
-    //     price: shippingCost,
-    //     quantity: 1,
-    //     size: "not a size",
-    //   });
-    // }
-
     try {
       // Send request to the backend to create a checkout session
       const response = await fetch("/api/create-checkout-session", {

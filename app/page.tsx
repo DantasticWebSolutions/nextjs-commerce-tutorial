@@ -1,5 +1,5 @@
-import Hero from "./components/Hero";
-import Newest from "./components/Newest";
+import Hero from "./components/Hero/Hero";
+import Newest from "./components/Products/Newest";
 import InstagramDm from "./components/InstagramDm";
 
 export const dynamic = "force-dynamic";
