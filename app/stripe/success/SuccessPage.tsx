@@ -145,9 +145,9 @@ export default function StripeSuccess() {
               </ul>
             </div>
             <p className="mt-5 text-left">
-              Abbiamo inoltrato un email con tutti i dettagli dell'ordine al tuo
-              indirizzo email. Controlla anche la tua cartella spam se non trovi
-              l'email.
+              {/* eslint-disable react/no-unescaped-entities */}
+              Abbiamo inoltrato un'email con tutti i dettagli del tuo ordine al
+              tuo indirizzo email. Controlla anche la tua cartella spam.
             </p>
             <p className="mt-5 text-left">
               I tuoi prodotti verranno consegnati entro 3-6 giorni lavorativi.
