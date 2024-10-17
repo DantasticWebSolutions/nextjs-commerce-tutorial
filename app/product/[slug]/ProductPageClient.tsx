@@ -65,6 +65,7 @@ export default function ProductPageClient({
         </div>
       </motion.div>
       {/* Recommended Products Section */}
+
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}

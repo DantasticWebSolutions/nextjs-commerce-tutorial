@@ -22,7 +22,7 @@ export default function HeroClient({ data }: HeroClientProps) {
       className="mx-auto max-w-2xl px-4 sm:pb-6 lg:max-w-7xl lg:px-8"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
+      transition={{ duration: 0.25 }}
     >
       <div className="mb-8 flex flex-wrap justify-between md:mb-16">
         <div className="mb-6 flex w-full flex-col justify-center sm:mb-12 lg:mb-0 lg:w-1/3 lg:pb-24 lg:pt-48">
@@ -39,7 +39,7 @@ export default function HeroClient({ data }: HeroClientProps) {
             className="relative left-12 top-12 z-10 -ml-12 overflow-hidden rounded-lg shadow-lg md:left-16 md:top-16 lg:ml-0"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.25 }}
           >
             <SkeletonImage
               src={urlFor(data.image1).url()}
@@ -56,7 +56,7 @@ export default function HeroClient({ data }: HeroClientProps) {
             className="overflow-hidden rounded-lg shadow-lg min-w-250 min-h-250"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.25 }}
           >
             <SkeletonImage
               src={urlFor(data.image2).url()}

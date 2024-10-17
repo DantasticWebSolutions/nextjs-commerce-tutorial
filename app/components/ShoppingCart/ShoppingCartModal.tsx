@@ -28,7 +28,7 @@ export default function ShoppingCartModal() {
   const cartTotalPrice = totalPrice ?? 0;
 
   // Calculate shipping cost and total with shipping
-  const shippingCost = cartTotalPrice > 90 ? 0 : 5;
+  const shippingCost = cartTotalPrice > 70 || cartTotalPrice === 0 ? 0 : 5;
   const totalWithShipping = cartTotalPrice + shippingCost;
 
   return (
@@ -123,7 +123,7 @@ export default function ShoppingCartModal() {
             <div className="flex justify-between text-base font-medium text-gray-900">
               <div>
                 <p>Spedizione:</p>
-                <p className="text-xs">Gratis per ordini superiori a 90.00€</p>
+                <p className="text-xs">Gratis per ordini superiori a 70.00€</p>
               </div>
               <p>€{shippingCost.toFixed(2)}</p>
             </div>

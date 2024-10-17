@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
-import nodemailer from "nodemailer";
+import sendgrid from "@sendgrid/mail";
 
 export const runtime = "nodejs"; // Ensure Node.js runtime
 
@@ -8,6 +8,8 @@ export const runtime = "nodejs"; // Ensure Node.js runtime
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
   apiVersion: "2023-10-16",
 });
+
+sendgrid.setApiKey(process.env.SENDGRID_API_KEY as string);
 
 export async function POST(req: NextRequest) {
   console.log("Webhook received"); // Add logging
@@ -46,13 +48,24 @@ export async function POST(req: NextRequest) {
       console.log("Processing checkout.session.completed event"); // Add logging
 
       const session = event.data.object as Stripe.Checkout.Session;
-      const customerEmail = session.customer_details?.email;
-
+      // Retrieve the full session with expanded line items
+      const fullSession = await stripe.checkout.sessions.retrieve(session.id, {
+        expand: ["line_items.data.price.product"],
+      });
+      const customerEmail = fullSession.customer_details?.email;
+      const customerName = fullSession.customer_details?.name;
+      const lineItems = fullSession.line_items?.data;
+      const totalAmount = fullSession.amount_total;
+      const orderId = fullSession.id;
       // Send email to the customer
       if (customerEmail) {
-        console.log(`Customer email: ${customerEmail}`); // Add logging
-        // Replace this with your email sending logic
-        await sendEmailToCustomer(customerEmail);
+        await sendEmailToCustomer(
+          customerEmail,
+          customerName,
+          lineItems,
+          totalAmount,
+          orderId
+        );
       } else {
         console.log("Customer email not found");
       }
@@ -68,27 +81,53 @@ export async function POST(req: NextRequest) {
 }
 
 // Function to send email
-async function sendEmailToCustomer(email: string) {
-  console.log(`Sending email to ${email}`); // Add logging
-
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: process.env.EMAIL_USER, // Your Gmail address
-      pass: process.env.EMAIL_PASS, // Your Gmail app password
-    },
-  });
-
-  const mailOptions = {
-    from: process.env.EMAIL_USER,
+async function sendEmailToCustomer(
+  email: string,
+  name: string | null | undefined,
+  lineItems: Stripe.LineItem[] | undefined,
+  totalAmount: number | null | undefined,
+  orderId: string | null | undefined
+) {
+  // Construct the order items list as HTML
+  let itemsListHtml = "";
+  if (lineItems && lineItems.length > 0) {
+    itemsListHtml = "<ul>";
+    for (const item of lineItems) {
+      const product = item.price?.product as Stripe.Product;
+      itemsListHtml += `<li>${item.quantity} x ${product.name} - €${(
+        item.amount_total! / 100
+      ).toFixed(2)}</li>`;
+    }
+    itemsListHtml += "</ul>";
+  }
+  // Email content
+  const msg = {
     to: email,
-    subject: "Thank you for your purchase!",
-    text: "We appreciate your business and hope you enjoy your purchase.",
-    html: "<p>We appreciate your business and hope you enjoy your purchase.</p>",
+    from: {
+      email: process.env.SENDER_EMAIL as string, // Your verified sender email
+      name: "Carmine Sembra Brooklyn", // Customize with your company name
+    },
+    subject: "Ordine completato",
+    text: `Gentile ${name || "cliente"},
+    \n\n<p>Il codice univoco per questo ordine è: ${orderId}</p>\n\nGrazie per il tuo acquisto e speriamo di vederti ai nostri eventi indossando i tuoi nuovi acquisti.\n\nDetagli ordine:\n${lineItems
+      ?.map(
+        (item) =>
+          `${item.quantity} x ${
+            (item.price?.product as Stripe.Product).name
+          } - €${(item.amount_total! / 100).toFixed(2)}`
+      )
+      .join("\n")}\n\nCordiali saluti,\nCarmine Sembra Brooklyn`,
+    html: `<p>Gentile ${name || "cliente"},</p>
+    <p>Il codice univoco per questo ordine è: ${orderId}</p>
+    <p>Grazie per il tuo acquisto e speriamo di vederti ai nostri eventi indossando i tuoi nuovi acquisti.</p>
+    <h3>Dettagli ordine:</h3>
+    ${itemsListHtml}
+    <p><strong>Totale:</strong> €${((totalAmount ?? 0) / 100).toFixed(2)}</p>
+    <p>Cordiali Saluti,<br>Carmine Sembra Brooklyn</p>`,
   };
 
   try {
-    await transporter.sendMail(mailOptions);
+    await sendgrid.send(msg);
     console.log(`Email sent to ${email}`);
   } catch (error) {
     console.error("Error sending email:", error);
