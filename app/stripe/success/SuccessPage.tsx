@@ -2,10 +2,9 @@
 import { useEffect, useState } from "react";
 import { useShoppingCart } from "use-shopping-cart";
 import { useSearchParams } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { CheckCheck } from "lucide-react";
-import Link from "next/link";
+import { Loader } from "lucide-react";
 import Stripe from "stripe";
+import OrderConfirmation from "@/app/components/OrderConfirmation";
 
 async function fetchSession(
   sessionId: string
@@ -78,9 +77,14 @@ export default function StripeSuccess() {
   // Handle the loading state
   if (isPaymentSuccessful === null) {
     return (
-      <div className="min-h-[70vh] flex items-center justify-center">
-        <p>Stiamo verificando il pagamento...</p>
-      </div>
+      <>
+        <div className="min-h-[70vh] flex flex-col items-center justify-center">
+          <Loader className="animate-spin h-12 w-12 text-gray-500 mb-4" />
+          <p className="text-gray-500 dark:text-gray-400">
+            Stiamo verificando il pagamento...
+          </p>
+        </div>
+      </>
     );
   }
 
@@ -102,82 +106,32 @@ export default function StripeSuccess() {
 
   // Payment was successful
   if (isPaymentSuccessful && sessionData) {
-    return (
-      <div className="min-h-[70vh]">
-        <div className="mt-32 md:max-w-[50vw] mx-auto">
-          <CheckCheck className="text-green-600 w-16 h-16 mx-auto my-6" />
-          <div className="text-center">
-            <h3 className="md:text-2xl text-base font-semibold">
-              Pagamento Completato!
-            </h3>
-            <p className="my-2">
-              Grazie per il tuo acquisto,{" "}
-              {sessionData.customer_details?.name || ""}.
-            </p>
-            <p>
-              speriamo di vederti ai nostri eventi indossando i tuoi nuovi
-              acquisti.
-            </p>
-
-            {/* Display order information */}
-            <div className="mt-6 text-left">
-              <h4 className="text-lg font-semibold">Dettagli ordine:</h4>
-              <p>
-                <strong>ID ordine:</strong> {sessionData.id}
-              </p>
-              <p>
-                <strong>Email:</strong> {sessionData.customer_details?.email}
-              </p>
-              <p>
-                <strong>Totale ordine:</strong> €
-                {(sessionData.amount_total! / 100).toFixed(2)}
-              </p>
-
-              {/* Display Line Items */}
-              <h5 className="mt-4 text-md font-semibold">Prodotti comprati:</h5>
-              <ul className="list-disc ml-5">
-                {sessionData.line_items?.data.map((item) => (
-                  <li key={item.id}>
-                    {item.quantity} x {item.description} - €
-                    {((item.amount_total ?? 0) / 100).toFixed(2)}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <p className="mt-5 text-left">
-              {/* eslint-disable react/no-unescaped-entities */}
-              Abbiamo inoltrato un'email con tutti i dettagli del tuo ordine al
-              tuo indirizzo email. Controlla anche la tua cartella spam.
-            </p>
-            <p className="mt-5 text-left">
-              I tuoi prodotti verranno consegnati entro 3-6 giorni lavorativi.
-            </p>
-            <Button asChild className="mt-5">
-              <Link href="/">Home</Link>
-            </Button>
-          </div>
+    if (!sessionData.line_items) {
+      return (
+        <div className="min-h-[70vh] flex items-center justify-center">
+          <p className="text-center">
+            {/* eslint-disable react/no-unescaped-entities */}
+            Errore nel recuperare i dettagli dell'ordine. Per favore contatta il
+            supporto tecnico.
+          </p>
         </div>
-      </div>
+      );
+    }
+    return (
+      <>
+        <OrderConfirmation
+          customer_name={sessionData.customer_details?.name}
+          session_id={sessionData.id}
+          customer_email={sessionData.customer_details?.email}
+          customer_address_line={sessionData.customer_details?.address?.line1}
+          customer_address_city={sessionData.customer_details?.address?.city}
+          customer_address_postal_code={
+            sessionData.customer_details?.address?.postal_code
+          }
+          session_total={sessionData.amount_total}
+          session_products={sessionData.line_items}
+        />
+      </>
     );
   }
-  // return (
-  //   <div className="h-[70vh] flex flex-col justify-center items-center">
-  //     <div className="mt-6 md:max-w-[50vw] mx-auto">
-  //       <CheckCheck className="text-green-600 w-16 h-16 mx-auto my-6" />
-  //       <div className="text-center">
-  //         <h3 className="md:text-2xl text-base font-semibold text-center">
-  //           Payment Done!
-  //         </h3>
-  //         <p className="text-gray-600 my-2">
-  //           Thank you for you pruchase We hope you enjoy it
-  //         </p>
-  //         <p>Have a great day!</p>
-
-  //         <Button asChild className="mt-5">
-  //           <Link href="/">GO back</Link>
-  //         </Button>
-  //       </div>
-  //     </div>
-  //   </div>
-  // );
 }

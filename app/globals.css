@@ -27,7 +27,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: rgba(14, 18, 29); /* Dark background */
+    --background: rgba(17, 24, 39); /* Dark background */
     --foreground: #ffffff; /* White text for dark mode */
     --primary: #ff6600; /* Orange for primary */
     --primary-foreground: #1a1a1a; /* Dark text on orange */

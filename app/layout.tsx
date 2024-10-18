@@ -21,7 +21,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <Head>
-        {/* Favicon and Icons */}
+        <meta
+          name="keywords"
+          content="Carmine Sembra Brooklyn, brescia, eventi, techno"
+        />
+        <link
+          rel="canonical"
+          href="https://carmine-sembra-brooklyn.vercel.app/"
+        />
         <link
           rel="apple-touch-icon"
           sizes="180x180"

@@ -1,6 +1,7 @@
 // app/error.tsx
 "use client";
 
+import { Button } from "@/components/ui/button";
 import { useEffect } from "react";
 
 export default function Error({
@@ -15,19 +16,34 @@ export default function Error({
   }, [error]);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-4">
-      <h2 className="text-2xl font-bold mb-4">
-        Qualcosa è andato storto! Prova a ricaricare la pagina e se il problema
-        persiste, invia un email a{" "}
-        <a href="mailto:carminesembrabrooklyn@gmail.com">
-          <u>carminesembrabrooklyn@gmail.com</u>
-        </a>{" "}
-        e allega uno screenshot della pagina per ricevere supporto.
-      </h2>
-      <p className="mb-4">{error.message}</p>
-      <button onClick={() => reset()} className="px-4 py-2 rounded">
-        Riprova
-      </button>
-    </div>
+    <section className="bg-white dark:bg-gray-900">
+      <div className="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6 min-h-[80vh] flex flex-col justify-center">
+        <div className="mx-auto max-w-screen-sm text-center">
+          <h1 className="mb-4 text-7xl tracking-tight font-extrabold lg:text-9xl text-primary-600 dark:text-primary-500">
+            500
+          </h1>
+          <p className="mb-4 text-3xl tracking-tight font-bold text-gray-900 md:text-4xl dark:text-white">
+            Errore Server Interno.
+          </p>
+          <p className="mb-4 text-lg font-light text-gray-500 dark:text-gray-400">
+            Qualcosa è andato storto! Prova a ricaricare la pagina e se il
+            problema persiste, invia un email a{" "}
+            <a href="mailto:carminesembrabrooklyn@gmail.com">
+              <u>carminesembrabrooklyn@gmail.com</u>
+            </a>{" "}
+            e allega uno screenshot della pagina per ricevere supporto.
+          </p>
+          <div className="space-y-4 sm:space-y-2 rounded-lg border border-gray-100 bg-gray-50 p-6 dark:border-gray-700 dark:bg-gray-800 mb-6 md:mb-8">
+            <p>{error.message}</p>
+          </div>
+          <Button
+            onClick={() => reset()}
+            className="px-4 py-2 rounded text-white"
+          >
+            Riprova
+          </Button>
+        </div>
+      </div>
+    </section>
   );
 }

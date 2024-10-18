@@ -57,6 +57,11 @@ export async function POST(req: NextRequest) {
       const lineItems = fullSession.line_items?.data;
       const totalAmount = fullSession.amount_total;
       const orderId = fullSession.id;
+      const customerAddressLine = fullSession.customer_details?.address?.line1;
+      const customerAddressCity = fullSession.customer_details?.address?.city;
+      const customerAddressPostalCode =
+        fullSession.customer_details?.address?.postal_code;
+
       // Send email to the customer
       if (customerEmail) {
         await sendEmailToCustomer(
@@ -64,7 +69,10 @@ export async function POST(req: NextRequest) {
           customerName,
           lineItems,
           totalAmount,
-          orderId
+          orderId,
+          customerAddressLine,
+          customerAddressCity,
+          customerAddressPostalCode
         );
       } else {
         console.log("Customer email not found");
@@ -86,20 +94,94 @@ async function sendEmailToCustomer(
   name: string | null | undefined,
   lineItems: Stripe.LineItem[] | undefined,
   totalAmount: number | null | undefined,
-  orderId: string | null | undefined
+  orderId: string | null | undefined,
+  customerAddressLine: string | null | undefined,
+  customerAddressCity: string | null | undefined,
+  customerAddressPostalCode: string | null | undefined
 ) {
-  // Construct the order items list as HTML
-  let itemsListHtml = "";
+  console.log(`Sending email to ${email}`); // Add logging
+
+  // Truncate Session ID
+  const truncatedSessionId = orderId?.slice(-20) ?? "";
+  // Construct Customer Address
+  const customerAddress = `${customerAddressLine ?? ""}, ${
+    customerAddressCity ?? ""
+  }, ${customerAddressPostalCode ?? ""}`;
+
+  // Construct Order Items HTML
+  let orderItemsHtml = "";
   if (lineItems && lineItems.length > 0) {
-    itemsListHtml = "<ul>";
     for (const item of lineItems) {
       const product = item.price?.product as Stripe.Product;
-      itemsListHtml += `<li>${item.quantity} x ${product.name} - €${(
-        item.amount_total! / 100
-      ).toFixed(2)}</li>`;
+      orderItemsHtml += `
+       <tr>
+        <td style="padding: 8px; color: #6b7280;">${product.name}</td>
+        <td style="padding: 8px; font-weight: bold; color: #111827; text-align: right;">
+          ${item.quantity} x €${((item.amount_total ?? 0) / 100).toFixed(2)}
+        </td>
+      </tr>
+      `;
     }
-    itemsListHtml += "</ul>";
   }
+
+  // Format Total Amount
+  const formattedTotalAmount = ((totalAmount ?? 0) / 100).toFixed(2);
+
+  // Replace placeholders in the HTML template
+  const emailHtml = `
+  <!-- Email Template Start -->
+  <section style="background-color: #ffffff; padding-top: 1rem; padding-bottom: 4rem; font-family: Arial, sans-serif;">
+    <div style="max-width: 600px; margin: 0 auto; padding: 0 1rem;">
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTibp508NO4CnYvITM-ht5S7RkI10YtErUKUA&s" alt="Carmine Sembra Brooklyn" style="width: 64px; height: 64px; margin: 1.5rem auto; display: block; color: #16a34a;" />
+      <h2 style="font-size: 1.25rem; font-weight: 600; color: #111827; margin-bottom: 0.5rem; text-align: center;">Pagamento completato!</h2>
+      <p style="color: #6b7280; margin-bottom: 1.5rem; text-align: center;">
+        Il tuo ordine
+        <span style="font-weight: 500; color: #111827;">${truncatedSessionId}</span>
+        sarà elaborato e spedito al più presto. La consegna è prevista entro 3-6 giorni lavorativi.
+      </p>
+
+      <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse; border: 1px solid #e5e7eb; background-color: #f9fafb; padding: 1.5rem; margin-bottom: 1.5rem;">
+        <tr>
+          <td style="padding: 8px; color: #6b7280;">Codice identificativo</td>
+          <td style="padding: 8px; font-weight: 500; color: #111827; text-align: right;">${truncatedSessionId}</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; color: #6b7280;">Nome</td>
+          <td style="padding: 8px; font-weight: 500; color: #111827; text-align: right;">${name}</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; color: #6b7280;">Email</td>
+          <td style="padding: 8px; font-weight: 500; color: #111827; text-align: right;">${email}</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; color: #6b7280;">Indirizzo</td>
+          <td style="padding: 8px; font-weight: 500; color: #111827; text-align: right;">${customerAddress}</td>
+        </tr>
+      </table>
+
+      <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse; border: 1px solid #e5e7eb; background-color: #f9fafb; padding: 1.5rem; margin-bottom: 1.5rem;">
+        <tr>
+          <td colspan="2" style="padding-bottom: 16px;">
+            <h2 style="font-size: 1.25rem; font-weight: bold; margin: 10px;">Riepilogo Ordine</h2>
+          </td>
+        </tr>
+        ${orderItemsHtml}
+        <tr>
+          <td colspan="2" style="border-top: 1px solid #d1d5db; padding-top: 16px;"></td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; color: #6b7280;">Totale</td>
+          <td style="padding: 8px; font-weight: bold; color: #111827; text-align: right;">€${formattedTotalAmount}</td>
+        </tr>
+      </table>
+      <div style="text-align: center;">
+        <a href="https://carmine-sembra-brooklyn.vercel.app/" style="background-color: #ff6600; color: #ffffff; padding: 0.625rem 1.25rem; border-radius: 0.375rem; text-decoration: none; font-weight: 500;">Continua a fare shopping</a>
+      </div>
+    </div>
+  </section>
+  <!-- Email Template End -->
+  `;
+
   // Email content
   const msg = {
     to: email,
@@ -108,22 +190,7 @@ async function sendEmailToCustomer(
       name: "Carmine Sembra Brooklyn", // Customize with your company name
     },
     subject: "Ordine completato",
-    text: `Gentile ${name || "cliente"},
-    \n\n<p>Il codice univoco per questo ordine è: ${orderId}</p>\n\nGrazie per il tuo acquisto e speriamo di vederti ai nostri eventi indossando i tuoi nuovi acquisti.\n\nDetagli ordine:\n${lineItems
-      ?.map(
-        (item) =>
-          `${item.quantity} x ${
-            (item.price?.product as Stripe.Product).name
-          } - €${(item.amount_total! / 100).toFixed(2)}`
-      )
-      .join("\n")}\n\nCordiali saluti,\nCarmine Sembra Brooklyn`,
-    html: `<p>Gentile ${name || "cliente"},</p>
-    <p>Il codice univoco per questo ordine è: ${orderId}</p>
-    <p>Grazie per il tuo acquisto e speriamo di vederti ai nostri eventi indossando i tuoi nuovi acquisti.</p>
-    <h3>Dettagli ordine:</h3>
-    ${itemsListHtml}
-    <p><strong>Totale:</strong> €${((totalAmount ?? 0) / 100).toFixed(2)}</p>
-    <p>Cordiali Saluti,<br>Carmine Sembra Brooklyn</p>`,
+    html: emailHtml,
   };
 
   try {
