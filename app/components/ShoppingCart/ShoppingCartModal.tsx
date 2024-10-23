@@ -117,7 +117,7 @@ export default function ShoppingCartModal() {
 
           <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
             <div className="flex justify-between text-base font-medium text-gray-900">
-              <p>Subtotal:</p>
+              <p>Totale parziale:</p>
               <p>€{cartTotalPrice.toFixed(2)}</p>
             </div>
             <div className="flex justify-between text-base font-medium text-gray-900">
