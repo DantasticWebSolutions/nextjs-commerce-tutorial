@@ -78,6 +78,23 @@ export async function POST(req: NextRequest) {
         console.log("Customer email not found");
       }
 
+      const supplierEmail = process.env.SUPPLIER_EMAIL as string;
+      if (supplierEmail && customerEmail) {
+        await sendEmailToSupplier(
+          supplierEmail,
+          customerName,
+          lineItems,
+          totalAmount,
+          orderId,
+          customerAddressLine,
+          customerAddressCity,
+          customerAddressPostalCode,
+          customerEmail
+        );
+      } else {
+        console.log("Supplier email not found");
+      }
+
       break;
     // ... handle other event types
     default:
@@ -198,5 +215,116 @@ async function sendEmailToCustomer(
     console.log(`Email sent to ${email}`);
   } catch (error) {
     console.error("Error sending email:", error);
+  }
+}
+
+// **Function to send email to the supplier**
+async function sendEmailToSupplier(
+  supplierEmail: string,
+  customerName: string | null | undefined,
+  lineItems: Stripe.LineItem[] | undefined,
+  totalAmount: number | null | undefined,
+  orderId: string | null | undefined,
+  customerAddressLine: string | null | undefined,
+  customerAddressCity: string | null | undefined,
+  customerAddressPostalCode: string | null | undefined,
+  customerEmail: string
+) {
+  console.log(`Sending email to supplier at ${supplierEmail}`);
+
+  // Truncate Session ID
+  const truncatedSessionId = orderId?.slice(-20) ?? "";
+  // Construct Customer Address
+  const customerAddress = `${customerAddressLine ?? ""}, ${
+    customerAddressCity ?? ""
+  }, ${customerAddressPostalCode ?? ""}`;
+
+  // Construct Order Items HTML
+  let orderItemsHtml = "";
+  if (lineItems && lineItems.length > 0) {
+    for (const item of lineItems) {
+      const product = item.price?.product as Stripe.Product;
+      orderItemsHtml += `
+        <tr>
+          <td style="padding: 8px; color: #6b7280;">${product.name}</td>
+          <td style="padding: 8px; font-weight: bold; color: #111827; text-align: right;">
+            ${item.quantity} x €${((item.amount_total ?? 0) / 100).toFixed(2)}
+          </td>
+        </tr>
+      `;
+    }
+  }
+
+  // Format Total Amount
+  const formattedTotalAmount = ((totalAmount ?? 0) / 100).toFixed(2);
+
+  // Replace placeholders in the HTML template
+  const emailHtml = `
+  <!-- Supplier Email Template Start -->
+  <section style="background-color: #ffffff; padding: 1rem; font-family: Arial, sans-serif;">
+    <div style="max-width: 600px; margin: 0 auto;">
+      <h2 style="font-size: 1.25rem; font-weight: 600; color: #111827; margin-bottom: 0.5rem;">Nuovo Ordine Ricevuto</h2>
+      <p style="color: #6b7280; margin-bottom: 1.5rem;">
+        Un nuovo ordine è stato effettuato con i seguenti dettagli:
+      </p>
+
+      <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse; border: 1px solid #e5e7eb; background-color: #f9fafb; padding: 1rem; margin-bottom: 1.5rem;">
+        <tr>
+          <td style="padding: 8px; color: #6b7280;">ID Ordine</td>
+          <td style="padding: 8px; font-weight: 500; color: #111827; text-align: right;">${truncatedSessionId}</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; color: #6b7280;">Nome Cliente</td>
+          <td style="padding: 8px; font-weight: 500; color: #111827; text-align: right;">${customerName}</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; color: #6b7280;">Email Cliente</td>
+          <td style="padding: 8px; font-weight: 500; color: #111827; text-align: right;">${customerEmail}</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; color: #6b7280;">Indirizzo Spedizione</td>
+          <td style="padding: 8px; font-weight: 500; color: #111827; text-align: right;">${customerAddress}</td>
+        </tr>
+      </table>
+
+      <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse; border: 1px solid #e5e7eb; background-color: #f9fafb; padding: 1rem; margin-bottom: 1.5rem;">
+        <tr>
+          <td colspan="2" style="padding-bottom: 16px;">
+            <h2 style="font-size: 1.25rem; font-weight: bold; margin: 0;">Dettagli Ordine</h2>
+          </td>
+        </tr>
+        ${orderItemsHtml}
+        <tr>
+          <td colspan="2" style="border-top: 1px solid #d1d5db; padding-top: 16px;"></td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; color: #6b7280;">Totale</td>
+          <td style="padding: 8px; font-weight: bold; color: #111827; text-align: right;">€${formattedTotalAmount}</td>
+        </tr>
+      </table>
+      <p style="color: #6b7280; margin-top: 1.5rem;">
+        Si prega di elaborare questo ordine il prima possibile.
+      </p>
+    </div>
+  </section>
+  <!-- Supplier Email Template End -->
+  `;
+
+  // Email content
+  const msg = {
+    to: supplierEmail,
+    from: {
+      email: process.env.SENDER_EMAIL as string, // Your verified sender email
+      name: "Carmine Sembra Brooklyn", // Customize with your company name
+    },
+    subject: "Nuovo Ordine Ricevuto",
+    html: emailHtml,
+  };
+
+  try {
+    await sendgrid.send(msg);
+    console.log(`Supplier email sent to ${supplierEmail}`);
+  } catch (error) {
+    console.error("Error sending supplier email:", error);
   }
 }

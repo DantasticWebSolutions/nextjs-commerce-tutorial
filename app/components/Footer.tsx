@@ -3,9 +3,9 @@ import React from "react";
 const Footer = () => {
   return (
     <div className="flex items-center justify-between mx-auto max-w-2xl px-4 sm:px-6 lg:max-w-7xl">
-      <footer className="w-full  bg-white rounded-lg shadow m-4 dark:bg-gray-800 mb-8">
+      <footer className="w-full  bg-white rounded-lg shadow m-4 dark:bg-neutral-800 mb-8">
         <div className="w-full mx-auto max-w-screen-xl p-4 md:flex md:items-center md:justify-between">
-          <span className="text-sm text-gray-500 sm:text-center dark:text-gray-400">
+          <span className="text-sm text-gray-500 sm:text-center dark:text-neutral-400">
             <a href="/" className="hover:underline">
               Carmine Sembra Brooklyn™
             </a>{" "}

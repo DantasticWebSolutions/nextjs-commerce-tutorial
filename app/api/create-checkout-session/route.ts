@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
     );
 
     // Determine the shipping cost
-    const shippingCost = totalPrice > 70 ? 0 : 5;
+    const shippingCost = totalPrice > 69 ? 0 : 5;
 
     // Prepare line items for Stripe
     const line_items = items.map((item: any) => ({

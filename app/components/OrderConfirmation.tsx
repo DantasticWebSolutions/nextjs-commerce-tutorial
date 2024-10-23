@@ -34,13 +34,13 @@ const OrderConfirmation = ({
 }: OrderConfirmationProps) => {
   const truncatedSessionId = sessionId.slice(-20);
   return (
-    <section className="bg-white pt-1 pb-16 antialiased dark:bg-gray-900 md:py-10">
+    <section className="pt-1 pb-16 antialiased md:py-10">
       <div className="mx-auto max-w-2xl px-4 2xl:px-0">
         <CheckCheck className="text-green-600 w-16 h-16 my-6" />
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl mb-2">
           Pagamento completato!
         </h2>
-        <p className="text-gray-500 dark:text-gray-400 mb-6 md:mb-8">
+        <p className="text-gray-500 dark:text-neutral-400 mb-6 md:mb-8">
           Il tuo ordine{" "}
           <span className="font-medium text-gray-900 dark:text-white break-all">
             {truncatedSessionId}
@@ -48,9 +48,9 @@ const OrderConfirmation = ({
           sarà elaborato e spedito al più presto. La consegna è prevista entro
           3-6 giorni lavorativi.
         </p>
-        <div className="space-y-4 sm:space-y-2 rounded-lg border border-gray-100 bg-gray-50 p-6 dark:border-gray-700 dark:bg-gray-800 mb-6 md:mb-8">
+        <div className="space-y-4 sm:space-y-2 rounded-lg border border-gray-100 bg-gray-50 p-6 dark:border-neutral-600 dark:bg-neutral-800 mb-6 md:mb-8">
           <dl className="sm:flex items-center justify-between gap-4">
-            <dt className="font-normal mb-1 sm:mb-0 text-gray-500 dark:text-gray-400">
+            <dt className="font-normal mb-1 sm:mb-0 text-gray-500 dark:text-neutral-400">
               Codice identificativo
             </dt>
             <dd className="font-medium text-gray-900 dark:text-white sm:text-end">
@@ -58,7 +58,7 @@ const OrderConfirmation = ({
             </dd>
           </dl>
           <dl className="sm:flex items-center justify-between gap-4">
-            <dt className="font-normal mb-1 sm:mb-0 text-gray-500 dark:text-gray-400">
+            <dt className="font-normal mb-1 sm:mb-0 text-gray-500 dark:text-neutral-400">
               Nome
             </dt>
             <dd className="font-medium text-gray-900 dark:text-white sm:text-end">
@@ -66,7 +66,7 @@ const OrderConfirmation = ({
             </dd>
           </dl>
           <dl className="sm:flex items-center justify-between gap-4">
-            <dt className="font-normal mb-1 sm:mb-0 text-gray-500 dark:text-gray-400">
+            <dt className="font-normal mb-1 sm:mb-0 text-gray-500 dark:text-neutral-400">
               Email
             </dt>
             <dd className="font-medium text-gray-900 dark:text-white sm:text-end">
@@ -74,7 +74,7 @@ const OrderConfirmation = ({
             </dd>
           </dl>
           <dl className="sm:flex items-center justify-between gap-4">
-            <dt className="font-normal mb-1 sm:mb-0 text-gray-500 dark:text-gray-400">
+            <dt className="font-normal mb-1 sm:mb-0 text-gray-500 dark:text-neutral-400">
               Indirizzo
             </dt>
             <dd className="font-medium text-gray-900 dark:text-white sm:text-end">
@@ -83,7 +83,7 @@ const OrderConfirmation = ({
             </dd>
           </dl>
         </div>
-        <div className="space-y-4 sm:space-y-2 rounded-lg border border-gray-100 bg-gray-50 p-6 dark:border-gray-700 dark:bg-gray-800 mb-6 md:mb-8">
+        <div className="space-y-4 sm:space-y-2 rounded-lg border border-gray-100 bg-gray-50 p-6 dark:border-neutral-700 dark:bg-neutral-800 mb-6 md:mb-8">
           <h2 className="text-xl font-bold mb-4">Riepilogo Ordine</h2>
           {sessionProducts?.data.map((item) => (
             <dl
@@ -94,7 +94,7 @@ const OrderConfirmation = ({
                 <dd className="font-medium text-gray-900 dark:text-white sm:text-end">
                   {item.quantity} x
                 </dd>{" "}
-                <dt className="font-normal mb-1 sm:mb-0 text-gray-500 dark:text-gray-400">
+                <dt className="font-normal mb-1 sm:mb-0 text-gray-500 dark:text-neutral-400">
                   {item.description}
                 </dt>
               </div>
@@ -107,7 +107,7 @@ const OrderConfirmation = ({
             <hr />
           </div>
           <dl className="sm:flex items-center justify-between gap-4">
-            <dt className="font-normal mb-1 sm:mb-0 text-gray-500 dark:text-gray-400">
+            <dt className="font-normal mb-1 sm:mb-0 text-gray-500 dark:text-neutral-400">
               Totale
             </dt>
             <dd className="font-bold text-gray-900 dark:text-white sm:text-end">
@@ -115,7 +115,7 @@ const OrderConfirmation = ({
             </dd>
           </dl>
         </div>
-        <p className="text-gray-500 dark:text-gray-400 my-6 md:my-8">
+        <p className="text-gray-500 dark:text-neutral-400 my-6 md:my-8">
           {/* eslint-disable react/no-unescaped-entities */}
           Abbiamo inviato una conferma del tuo ordine, comprensiva di tutti i
           dettagli, al tuo indirizzo email. Ti preghiamo di controllare anche la

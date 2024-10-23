@@ -28,7 +28,7 @@ export default function ShoppingCartModal() {
   const cartTotalPrice = totalPrice ?? 0;
 
   // Calculate shipping cost and total with shipping
-  const shippingCost = cartTotalPrice > 70 || cartTotalPrice === 0 ? 0 : 5;
+  const shippingCost = cartTotalPrice > 69 || cartTotalPrice === 0 ? 0 : 5;
   const totalWithShipping = cartTotalPrice + shippingCost;
 
   return (
