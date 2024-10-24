@@ -30,7 +30,7 @@ export default function NewestClient({ data }: NewestClientProps) {
               id={product._id}
               name={product.name}
               price={product.price}
-              categoryName={product.categoryName}
+              category={product.categoryName}
               imageUrl={product.imageUrl}
               slug={product.slug}
             />

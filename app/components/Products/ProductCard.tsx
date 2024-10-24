@@ -11,7 +11,7 @@ interface ProductCardProps {
   id: string;
   name: string;
   price: number;
-  categoryName: string;
+  category: string;
   imageUrl: string;
   slug: string;
 }
@@ -20,12 +20,12 @@ export default function ProductCard({
   id,
   name,
   price,
-  categoryName,
+  category,
   imageUrl,
   slug,
 }: ProductCardProps) {
   return (
-    <div className="w-full max-w-sm border border-border rounded-lg shadow-custom-light">
+    <div className="relative w-full max-w-sm border border-border rounded-lg shadow-custom-light">
       <Link href={`/product/${slug}`}>
         <SkeletonImage
           src={imageUrl}
@@ -38,6 +38,11 @@ export default function ProductCard({
           height={300}
           style={{ width: "100%", height: "75%", maxHeight: "320px" }}
         />
+        {category === "Edizione speciale" && (
+          <span className="absolute left-0 top-0 rounded-tl-lg rounded-br-lg bg-red-500 px-3 py-1.5 text-sm uppercase tracking-wider text-white">
+            Edizione Limitata
+          </span>
+        )}
         {/* 
         <Image
           className="pb-8 rounded-t-lg object-cover"
@@ -53,7 +58,9 @@ export default function ProductCard({
           <Link href={`/product/${slug}`}>
             <h3 className="text-xl font-normal tracking-tight">{name}</h3>
           </Link>
-          <span className="text-3xl font-bold ps-3">€{price.toFixed(2)}</span>
+          <span className="text-3xl font-bold ps-3">
+            €{(price / 100).toFixed(2)}
+          </span>
         </div>
         <div className="flex items-center justify-between mt-3 w-full">
           <Link href={`/product/${slug}`} className="w-full">

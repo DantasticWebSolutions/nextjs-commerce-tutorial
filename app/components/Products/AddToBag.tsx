@@ -11,6 +11,7 @@ export interface ProductCart {
   price: number;
   currency: string;
   image: any;
+  category: string;
 }
 
 export default function AddToBag({
@@ -19,15 +20,20 @@ export default function AddToBag({
   image,
   name,
   price,
+  category,
 }: ProductCart) {
   const { addItem, cartDetails, incrementItem, handleCartClick } =
     useShoppingCart();
   const [selectedSize, setSelectedSize] = useState("");
+  const isSizeRequired = category !== "Altro";
 
   // Function to handle adding item to cart
   const handleAddToCart = () => {
     // Create a unique id for the product with size
-    const productId = `${name}-${selectedSize}`;
+    const productId = isSizeRequired ? `${name}-${selectedSize}` : name;
+
+    // Prepare the product name
+    const productName = isSizeRequired ? `${name} - ${selectedSize}` : name;
 
     // Check if an item with the same id and size exists in the cart
     const existingItem = Object.values(cartDetails ?? {}).find(
@@ -40,12 +46,12 @@ export default function AddToBag({
     } else {
       addItem({
         id: productId, // Unique id for different sizes
-        name: `${name} - ${selectedSize}`, // Append size to name
+        name: productName, // Append size to name
         description,
         price: price, // Convert to cents for Stripe
         currency,
         image: urlFor(image).url(),
-        size: selectedSize, // Add size attribute
+        size: isSizeRequired ? selectedSize : null,
       });
     }
     handleCartClick();
@@ -53,38 +59,42 @@ export default function AddToBag({
 
   return (
     <div className="w-full md:w-auto flex flex-col">
-      <div className="mb-4">
-        <p>Seleziona la taglia:</p>
-        <div className="mt-3 flex flex-col space-y-4 md:flex-row md:space-y-0 md:space-x-4">
-          {["XS", "S", "M", "L", "XL"].map((size) => (
-            <label
-              key={size}
-              className={`text-center w-full md:w-auto cursor-pointer text-white px-4 py-2 border rounded-lg transition-colors
+      {isSizeRequired && (
+        <div className="mb-4">
+          <p>Seleziona la taglia:</p>
+          <div className="mt-3 flex flex-col space-y-4 md:flex-row md:space-y-0 md:space-x-4">
+            {["XS", "S", "M", "L", "XL"].map((size) => (
+              <label
+                key={size}
+                className={`text-center w-full md:w-auto cursor-pointer text-white px-4 py-2 border rounded-lg transition-colors
                 ${
                   selectedSize === size
                     ? "bg-primary border-primary" // Selected: full color
                     : "bg-transparent border-primary hover:bg-primary hover:text-white" // Not selected: outlined
                 }`}
-            >
-              <input
-                type="radio"
-                name="size"
-                value={size}
-                checked={selectedSize === size}
-                onChange={(e) => setSelectedSize(e.target.value)}
-                className="hidden" // Hide the default radio button
-              />
-              <span className={`${selectedSize === size ? "text-white" : ""}`}>
-                {size}
-              </span>
-            </label>
-          ))}
+              >
+                <input
+                  type="radio"
+                  name="size"
+                  value={size}
+                  checked={selectedSize === size}
+                  onChange={(e) => setSelectedSize(e.target.value)}
+                  className="hidden" // Hide the default radio button
+                />
+                <span
+                  className={`${selectedSize === size ? "text-white" : ""}`}
+                >
+                  {size}
+                </span>
+              </label>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
       <Button
         className="text-white w-full md:w-auto"
         onClick={handleAddToCart}
-        disabled={!selectedSize}
+        disabled={isSizeRequired && !selectedSize}
       >
         Aggiungi al carrello
       </Button>

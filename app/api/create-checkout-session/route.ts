@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
     );
 
     // Determine the shipping cost
-    const shippingCost = totalPrice > 69 ? 0 : 5;
+    const shippingCost = totalPrice > 6999 ? 0 : 500;
 
     // Prepare line items for Stripe
     const line_items = items.map((item: any) => ({
@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
           name: item.name,
           images: item.images ? [item.images] : [],
         },
-        unit_amount: item.price * 100,
+        unit_amount: item.price,
       },
       quantity: item.quantity,
     }));
@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
           product_data: {
             name: "Spedizione",
           },
-          unit_amount: shippingCost * 100,
+          unit_amount: shippingCost,
         },
         quantity: 1,
       });

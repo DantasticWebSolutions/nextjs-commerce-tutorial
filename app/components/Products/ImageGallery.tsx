@@ -7,9 +7,10 @@ import SkeletonImage from "../Skeletons/SkeletonsImage";
 
 interface iAppProps {
   images: any;
+  category: string;
 }
 
-export default function ImageGallery({ images }: iAppProps) {
+export default function ImageGallery({ images, category }: iAppProps) {
   const [bigImage, setBigImage] = useState(images[0]);
 
   const handleSmallImageClick = (image: any) => {
@@ -60,9 +61,11 @@ export default function ImageGallery({ images }: iAppProps) {
           height={500}
         />
 
-        <span className="absolute left-0 top-0 rounded-br-lg bg-red-500 px-3 py-1.5 text-sm uppercase tracking-wider text-white">
-          Sale
-        </span>
+        {category === "Edizione speciale" && (
+          <span className="absolute left-0 top-0 rounded-br-lg bg-red-500 px-3 py-1.5 text-sm uppercase tracking-wider text-white">
+            Edizione Limitata
+          </span>
+        )}
       </div>
     </div>
   );

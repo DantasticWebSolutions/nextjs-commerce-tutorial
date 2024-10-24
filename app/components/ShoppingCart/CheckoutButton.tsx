@@ -36,6 +36,7 @@ export default function CheckoutButton({ shippingCost }: CheckoutButtonProps) {
       price: entry.price,
       quantity: entry.quantity,
       size: entry.size,
+      image: entry.image,
     }));
 
     try {
@@ -69,7 +70,7 @@ export default function CheckoutButton({ shippingCost }: CheckoutButtonProps) {
       disabled={cartTotalPrice === 0 || loading}
       className="text-white py-2 px-4 rounded disabled:opacity-50 w-full"
     >
-      {loading ? "In attesa..." : "Compra Ora"}
+      {loading ? "In attesa..." : "Procedi al pagamento"}
     </Button>
   );
 }

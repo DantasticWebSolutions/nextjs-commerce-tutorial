@@ -28,8 +28,16 @@ export default function ShoppingCartModal() {
   const cartTotalPrice = totalPrice ?? 0;
 
   // Calculate shipping cost and total with shipping
-  const shippingCost = cartTotalPrice > 69 || cartTotalPrice === 0 ? 0 : 5;
+  const shippingThreshold = 7000; // Define the free shipping threshold
+  const shippingCost =
+    cartTotalPrice > shippingThreshold || cartTotalPrice === 0 ? 0 : 500;
   const totalWithShipping = cartTotalPrice + shippingCost;
+
+  // Calculate the amount remaining to qualify for free shipping
+  const amountRemainingForFreeShipping = Math.max(
+    0,
+    shippingThreshold - cartTotalPrice
+  );
 
   return (
     <Sheet open={shouldDisplayCart} onOpenChange={() => handleCartClick()}>
@@ -39,6 +47,32 @@ export default function ShoppingCartModal() {
         </SheetHeader>
 
         <div className="h-full flex flex-col justify-between">
+          {cartCount !== 0 &&
+            (amountRemainingForFreeShipping > 0 ? (
+              <div
+                className="p-4 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400 mt-3"
+                role="alert"
+              >
+                <p>
+                  Aggiungi{" "}
+                  <span className="font-bold">
+                    €{(amountRemainingForFreeShipping / 100).toFixed(2)}
+                  </span>{" "}
+                  per sbloccare la{" "}
+                  <span className="font-bold">spedizione gratuita</span>!
+                </p>
+              </div>
+            ) : (
+              <div
+                className="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-green-800 dark:text-green-400 mt-3"
+                role="alert"
+              >
+                <p>
+                  Hai sbloccato la{" "}
+                  <span className="font-bold">spedizione gratuita</span>!
+                </p>
+              </div>
+            ))}
           <div className="mt-8 flex-1 overflow-y-auto">
             <ul className="-my-6 divide-y divide-gray-200">
               {cartCount === 0 ? (
@@ -71,10 +105,11 @@ export default function ShoppingCartModal() {
                         <div>
                           <div className="flex justify-between text-base font-medium text-gray-900">
                             <h3>{entry.name}</h3>
-                            <p className="ml-4">€{entry.price}.00</p>
+                            <p className="ml-4">
+                              €{(entry.price / 100).toFixed(2)}
+                            </p>
                           </div>
                         </div>
-
                         <div className="flex flex-1 items-center justify-between text-sm">
                           <div className="flex items-center space-x-2">
                             <button
@@ -118,18 +153,17 @@ export default function ShoppingCartModal() {
           <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
             <div className="flex justify-between text-base font-medium text-gray-900">
               <p>Totale parziale:</p>
-              <p>€{cartTotalPrice.toFixed(2)}</p>
+              <p>€{(cartTotalPrice / 100).toFixed(2)}</p>
             </div>
             <div className="flex justify-between text-base font-medium text-gray-900">
               <div>
                 <p>Spedizione:</p>
-                <p className="text-xs">Gratis per ordini superiori a 70.00€</p>
               </div>
-              <p>€{shippingCost.toFixed(2)}</p>
+              <p>€{(shippingCost / 100).toFixed(2)}</p>
             </div>
             <div className="flex justify-between text-base font-medium text-gray-900">
               <p>Totale:</p>
-              <p>€{totalWithShipping.toFixed(2)}</p>
+              <p>€{(totalWithShipping / 100).toFixed(2)}</p>
             </div>
 
             <div className="mt-6">
