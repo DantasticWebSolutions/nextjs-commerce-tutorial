@@ -6,6 +6,7 @@ import Navbar from "./components/Navbar";
 import ShoppingCartModal from "./components/ShoppingCart/ShoppingCartModal";
 import Head from "next/head";
 import Footer from "./components/Footer";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -61,6 +62,7 @@ export default function RootLayout({
           <Footer />
         </CartProvider>
       </body>
+      <GoogleAnalytics gaId="G-FPZL9JSTJ0" />
     </html>
   );
 }
